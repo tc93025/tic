@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import echarts from 'echarts'
 
 ReactDOM.render(
   <React.StrictMode>

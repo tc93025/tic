@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import echarts from 'echarts'
+import { getWeatherOfYueyang } from '../../common/api'
 
 const Lines = () => {
 
@@ -27,11 +28,12 @@ const Lines = () => {
     }]
   }
 
-
   useEffect(() => {
     echarts.init(lines.current, 'dark').setOption(options)
+    console.log(data);
   })
 
+  let data = getWeatherOfYueyang()
 
   return (
     <>

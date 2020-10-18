@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import echarts from 'echarts'
+import 'echarts/theme/eduardo'
 import { getWeatherOfYueyang } from '../../common/api'
 
 const Lines = () => {
@@ -71,16 +72,14 @@ const Lines = () => {
   }
 
   useEffect(() => {
-    echarts.init(lines.current, 'dark').setOption(options)
-    console.log(data);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    echarts.init(lines.current, 'eduardo').setOption(options)
+  }, [options])
 
   let data = getWeatherOfYueyang()
 
   return (
     <>
-      <div ref={lines} style={{ height: '100vh', width: '100%' }}></div>
+      <div ref={lines} style={{ height: '300px', width: '400px' }}></div>
     </>
   )
 }

@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+axios.defaults.baseURL = '/bss';
+
 export function get({ url, data }) {
   axios({
     method: 'get',

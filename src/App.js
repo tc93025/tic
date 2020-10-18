@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import Lines from './charts/lines'
-import echarts from 'echarts'
 
 function App() {
 

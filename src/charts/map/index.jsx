@@ -56,7 +56,7 @@ const Map = () => {
             },
             position: 'top',
             show: true,
-            backgroundColor: '#3f51b5',
+            backgroundColor: '#FFA500',
             fontWeight: 600,
             padding: [0, 10],
             borderRadius: 3,

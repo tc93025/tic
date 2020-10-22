@@ -31,13 +31,29 @@ const Bar = () => {
     },
     yAxis: {
       type: 'category',
+      min: 1,
+      nameTextStyle: {
+        fontSize: 5
+      },
       data: return50Brand().map(i => i.goodsName)
     },
+    visualMap: {
+      min: 0,
+      max: 50,
+      left: 'left',
+      text: ['高', '低'],           // 文本，默认为数值文本
+      calculable: true,
+      type: 'continuous',
+      inRange: {
+        color: ['#FFFFFF', '#3f51b5']
+      }
+    },
+
     animation: true,
     animationEasing: "cubicOut",
     series: [
       {
-        name: '2011年',
+        name: '销量',
         type: 'bar',
         data: return50Brand().map(i => i.id),
         itemStyle: {

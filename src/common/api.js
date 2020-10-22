@@ -4,3 +4,6 @@ import { get, post } from './request'
 export function getWeatherOfYueyang(){
   return get({url:'/stats/bestSellersGoodsList'})
 }
+
+// 轮询所有数据接口
+// export function 

@@ -1,14 +1,14 @@
 import React from 'react';
 import './App.css';
-import Lines from './charts/lines'
-import Pie from './charts/pie'
-import Sunburst from './charts/sunburst'
-
+// import Lines from './charts/lines'
+// import Pie from './charts/pie'
+// import Sunburst from './charts/sunburst'
+import Report from './paper'
 function App() {
 
   return (
     <div className="App">
-      
+      <Report></Report>
     </div>
   );
 

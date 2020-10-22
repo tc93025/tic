@@ -1,36 +1,48 @@
 import React, { useEffect, useRef } from 'react'
 import echarts from 'echarts'
 import 'echarts/theme/eduardo'
+import { return50Brand } from '../../common/mock'
+import { colorList } from '../../common/const'
 
 const Scatter = () => {
 
   const scatter = useRef(null)
 
   const options = {
-    xAxis: {},
-    yAxis: {},
+    title: {
+      text: '散点图'
+    },
+    xAxis: {
+      name: '销量'
+    },
+    yAxis: {
+      name: '折扣率'
+    },
+    tooltip: {
+      formatter: (item) => {
+        return `商品：${item.data[2]}<br>销量：${item.data[0]},<br/>折扣率：${item.data[1]}`
+      }
+    },
+    animation: true,
+    animationEasing: "cubicOut",
     series: [{
-      symbolSize: 20,
-      data: [
-        [10.0, 8.04],
-        [8.0, 6.95],
-        [13.0, 7.58],
-        [9.0, 8.81],
-        [11.0, 8.33],
-        [14.0, 9.96],
-        [6.0, 7.24],
-        [4.0, 4.26],
-        [12.0, 10.84],
-        [7.0, 4.82],
-        [5.0, 5.68]
-      ],
-      type: 'scatter'
+      symbolSize: 10,
+      data: return50Brand().map((i, index) => [i.sellNum, index, i.goodsName]),
+      type: 'scatter',
+      itemStyle: {
+        normal: {
+          color: function (params) {
+            return colorList[params.dataIndex]
+          }
+        }
+      }
     }]
   }
 
   useEffect(() => {
     echarts.init(scatter.current, 'eduardo').setOption(options)
-  }, [options])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div ref={scatter} style={{ height: '80vh', width: '100%' }}></div>

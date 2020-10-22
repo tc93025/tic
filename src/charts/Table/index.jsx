@@ -15,11 +15,14 @@ const ChartTable = () => {
     <Table className={classes.table} aria-label="simple table">
       <TableHead>
         <TableRow>
-          <TableCell>Dessert (100g serving)</TableCell>
-          <TableCell align="right">Calories</TableCell>
-          <TableCell align="right">Fat&nbsp;(g)</TableCell>
-          <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-          <TableCell align="right">Protein&nbsp;(g)</TableCell>
+          <TableCell>商品名称</TableCell>
+          <TableCell align="right" >销量</TableCell>
+          <TableCell align="right">购买人数</TableCell>
+          <TableCell align="right">折扣率</TableCell>
+          <TableCell align="right" width="150">销量增长幅度（当前时间内30分钟/十分钟前30分钟合计）</TableCell>
+          <TableCell align="right">均价（原价）</TableCell>
+          <TableCell align="right">平均到手价</TableCell>
+
         </TableRow>
       </TableHead>
       <TableBody>
@@ -31,6 +34,8 @@ const ChartTable = () => {
             <TableCell align="right">{row.calories}</TableCell>
             <TableCell align="right">{row.fat}</TableCell>
             <TableCell align="right">{row.carbs}</TableCell>
+            <TableCell align="right">{row.protein}</TableCell>
+            <TableCell align="right">{row.protein}</TableCell>
             <TableCell align="right">{row.protein}</TableCell>
           </TableRow>
         ))}

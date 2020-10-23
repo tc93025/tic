@@ -19,7 +19,7 @@ function getRandomArrayElements(arr, count) {
   if (!shuffled.slice(min)[0]) {
     return []
   }
-  return shuffled.slice(min).sort((a, b) => a.growthSellNum - b.growthSellNum > 0);
+  return shuffled.slice(min).sort((a, b) => a.growthSellNum - b.growthSellNum);
 }
 
 const useLayout = makeStyles((theme) => ({
@@ -114,8 +114,13 @@ const Report = () => {
   }
 
   const handleConfirm = async () => {
-    const res = await post({ url: '/stats/queryCityBestSellerGoodsList', data: { ...query, account: address } })
+    const res = await post({ url: '/mess/subscribe', data: { ...query, account: address } })
+    alert('订阅成功')
     handleClose()
+  }
+
+  const handleDeliver = async() =>{
+    const res = await post({ url: '/mess/subscribe', data: { ...query, account: address } })
   }
 
   const handleChange = (e) => {

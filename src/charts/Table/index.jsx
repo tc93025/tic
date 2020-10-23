@@ -1,5 +1,6 @@
 import React, { } from 'react'
-import { Table, TableBody, TableHead, TableCell, TableRow, makeStyles, TableContainer } from '@material-ui/core'
+import { Table, TableBody, TableHead, TableCell, TableRow, makeStyles, TableContainer, Button } from '@material-ui/core'
+import { post } from '../../common/request'
 
 const useStyles = makeStyles({
   table: {
@@ -7,12 +8,23 @@ const useStyles = makeStyles({
     minHeight: '60vh',
     maxHeight: '70vh'
   },
+  button: {
+    marginLeft: '5px',
+    verticalAlign: 'bottom'
+  },
 });
 
 const ChartTable = (props) => {
   const rows = props.data
-  console.log('ChartTable',rows);
+  console.log('ChartTable', rows);
   const classes = useStyles();
+
+  const handleClick = async ({ upcCode, goodsName }) => {
+    console.log({ upcCode, goodsName });
+    const res = await post({ url: '/mess/subGoods', data: { upcCode, goodsName } })
+    alert('推送成功')
+  }
+
   return (
     <TableContainer className={classes.table}>
       <Table stickyHeader className={classes.table} aria-label="simple table">
@@ -25,7 +37,7 @@ const ChartTable = (props) => {
             <TableCell align="right" width="150">销量增长幅度（当前时间内30分钟/十分钟前30分钟合计）</TableCell>
             <TableCell align="right">均价（原价）</TableCell>
             <TableCell align="right">平均到手价</TableCell>
-
+            <TableCell align="right">操作</TableCell>
           </TableRow>
         </TableHead>
         <TableBody style={{ maxHeight: '500px' }}>
@@ -40,6 +52,11 @@ const ChartTable = (props) => {
               <TableCell align="right">{row.growthSellNumRate}%</TableCell>
               <TableCell align="right">{row.skuTotalAmount}</TableCell>
               <TableCell align="right">{row.sellerAmount}</TableCell>
+              <TableCell align="center">
+                <Button className={classes.button} onClick={()=>handleClick(row)} variant="contained" color="primary">
+                  推送地推员
+                  </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

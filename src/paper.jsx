@@ -19,7 +19,7 @@ function getRandomArrayElements(arr, count) {
   if (!shuffled.slice(min)[0]) {
     return []
   }
-  return shuffled.slice(min);
+  return shuffled.slice(min).sort((a, b) => a.growthSellNum - b.growthSellNum > 0);
 }
 
 const useLayout = makeStyles((theme) => ({
@@ -102,6 +102,9 @@ const Report = () => {
 
   useEffect(() => {
     handleSearch()
+    let interval = setInterval(() => {
+      handleSearch()
+    }, 600000)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -118,11 +121,6 @@ const Report = () => {
   const handleChange = (e) => {
     setAddress(e.target.value)
   }
-
-  // // 轮询
-  let interval = setInterval(() => {
-    handleSearch()
-  }, 600000)
 
   const handleSearch = async () => {
     const res = await post({ url: '/stats/queryBestSellerGoodsList', data: query })

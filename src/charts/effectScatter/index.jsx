@@ -13,9 +13,9 @@ const Scatter = (props) => {
       echarts.getInstanceByDom(scatter.current).setOption({
         series: [{
           symbolSize: function (val) {
-            return val[0];
+            return val[0]*4;
           },
-          data: data.map((i) => [i.growthDiscountRate, i.sellNum, i.goodsName]),
+          data: data.map((i) => [i.growthSellNum,i.growthDiscountRate ,i.goodsName]),
           type: 'scatter',
           itemStyle: {
             normal: {

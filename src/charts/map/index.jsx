@@ -13,6 +13,7 @@ const convertData = (data) => {
     if (geoCoord) {
       res.push({
         name: data[i].name,
+        goodsName: data[i].goodsName,
         value: geoCoord.concat(data[i].value)
       });
     }
@@ -21,7 +22,7 @@ const convertData = (data) => {
 };
 
 const Map = (props) => {
-  const data = props.data.map(i => { return { name: city2Map[i.cityId], value: i.growthSellNum } })
+  const data = props.data.map(i => { return { name: city2Map[i.cityId], goodsName: i.goodsName, value: i.growthSellNum } })
   console.log('map', data)
 
   const map = useRef(null)
@@ -35,7 +36,7 @@ const Map = (props) => {
             coordinateSystem: 'bmap',
             data: convertData(data),
             symbolSize: function (val) {
-              return val[2];
+              return val[2] * 3;
             },
             encode: {
               value: 2
@@ -43,7 +44,7 @@ const Map = (props) => {
             label: {
               normal: {
                 formatter: (item) => {
-                  return `${item.data.name},销量：${item.data.value[2]}`
+                  return `${item.data.goodsName},销量：${item.data.value[2]}`
                 },
                 position: 'top',
                 show: true,

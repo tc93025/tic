@@ -4,9 +4,28 @@ import 'echarts/theme/eduardo'
 import { return50Brand } from '../../common/mock'
 import { colorList } from '../../common/const'
 
-const Scatter = () => {
-
+const Scatter = (props) => {
+  const data = props.data || []
   const scatter = useRef(null)
+
+  useEffect(() => {
+    if (data.length > 0) {
+      echarts.getInstanceByDom(scatter.current).setOption({
+        series: [{
+          symbolSize: 10,
+          data: data.map((i) => [i.growthDiscountRate, i.sellNum, i.goodsName]),
+          type: 'scatter',
+          itemStyle: {
+            normal: {
+              color: function (params) {
+                return colorList[params.dataIndex]
+              }
+            }
+          }
+        }]
+      })
+    }
+  }, [data])
 
   const options = {
     title: {
@@ -27,7 +46,7 @@ const Scatter = () => {
     animationEasing: "cubicOut",
     series: [{
       symbolSize: 10,
-      data: return50Brand().map((i, index) => [i.sellNum, index, i.goodsName]),
+      data: [],
       type: 'scatter',
       itemStyle: {
         normal: {

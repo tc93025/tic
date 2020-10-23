@@ -1,11 +1,26 @@
-import React, { useState, useEffect, useReducer } from 'react'
-import { Grid, Paper, makeStyles, Select, FormControl, InputLabel, MenuItem, Button, TextField, Container, AppBar, Toolbar, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText } from '@material-ui/core'
+import React, { useState, useEffect, useReducer, useRef } from 'react'
+import { Grid, Paper, makeStyles, Select, FormControl, InputLabel, MenuItem, Button, TextField, Container, AppBar, Toolbar, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Snackbar } from '@material-ui/core'
 import { geoCoordMap, orgMap, cityMap } from './common/const'
 import Scatter from './charts/effectScatter'
 import ChartTable from './charts/Table'
 import Bar from './charts/bar'
 import Bar2 from './charts/bar2'
 import Map from './charts/map'
+import { post } from './common/request'
+
+function getRandomArrayElements(arr, count) {
+  var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
+  while (i-- > min) {
+    index = Math.floor((i + 1) * Math.random());
+    temp = shuffled[index];
+    shuffled[index] = shuffled[i];
+    shuffled[i] = temp;
+  }
+  if(!shuffled.slice(min)[0]){
+    return []
+  }
+  return shuffled.slice(min);
+}
 
 const useLayout = makeStyles((theme) => ({
   root: {
@@ -34,9 +49,9 @@ const useLayout = makeStyles((theme) => ({
 }));
 
 const initialQuery = {
-  growthSellNum: '',
-  growthDiscountRate: '',
-  growthSellNumRate: '',
+  growthSellNum: null,
+  growthDiscountRate: null,
+  growthSellNumRate: null,
   city: '',
   org: '',
   category: '',
@@ -46,11 +61,11 @@ const initialQuery = {
 const queryReducer = (state, action) => {
   switch (action.type) {
     case 'growthSellNum':
-      return { ...state, growthSellNum: action.value }
+      return { ...state, growthSellNum: parseInt(action.value) }
     case 'growthDiscountRate':
-      return { ...state, growthDiscountRate: action.value }
+      return { ...state, growthDiscountRate: parseInt(action.value) }
     case 'growthSellNumRate':
-      return { ...state, growthSellNumRate: action.value }
+      return { ...state, growthSellNumRate: parseInt(action.value) }
     case 'city':
       return { ...state, city: action.value, cityId: cityMap[action.value] }
     case 'org':
@@ -70,13 +85,23 @@ const Report = () => {
   const [query, dispatch] = useReducer(queryReducer, initialQuery)
   const [open, setOpen] = useState(false)
   const [address, setAddress] = useState('')
+  const [scatterData, setScatterData] = useState([])
+  const [tableData, setTableData] = useState([])
+  const [bar2Data, setBar2Data] = useState([])
+  const [mapData, setMapData] = useState([])
+  const [barData, setBarData] = useState([])
+
+  const [totalRes, setTotalRes] = useState({})
 
   const cityArr = Object.keys(geoCoordMap)
   const orgArr = Object.keys(orgMap)
 
+  const intervalRef = useRef()
+
   useEffect(() => {
-    console.log(query)
-  }, [query])
+    handleSearch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleClose = () => {
     setAddress('');
@@ -84,7 +109,53 @@ const Report = () => {
   }
 
   const handleConfirm = () => {
+
     handleClose()
+  }
+
+  const handleChange = (e) => {
+    setAddress(e.target.value)
+  }
+
+  // // 轮询
+  let interval = setInterval(() => {
+    handleSearch()
+  }, 600000)
+
+  const handleSearch = async () => {
+    const res = await post({ url: '/stats/queryBestSellerGoodsList', data: query })
+    const res2 = await post({ url: '/stats/queryBrandBestSellerGoodsList', data: query })
+    const res3 = await post({ url: '/stats/queryCityBestSellerGoodsList', data: query })
+
+    calculate(res.data.result, res2.data.result, res3.data.result)
+  }
+
+  const calculate = (data, data2, data3) => {
+    setTotalRes({ data, data2, data3 })
+  }
+
+  useEffect(() => {
+    if (totalRes.data) {
+      setData(getRandomArrayElements(totalRes.data, 20), getRandomArrayElements(totalRes.data2, 20), getRandomArrayElements(totalRes.data3, 20))
+      const id = setInterval(() => {
+        setData(getRandomArrayElements(totalRes.data, 20), getRandomArrayElements(totalRes.data2, 20), getRandomArrayElements(totalRes.data3, 20))
+      }, 30000)
+
+      intervalRef.current = id
+
+      return () => {
+        clearInterval(intervalRef.current)
+      }
+    }
+
+  }, [totalRes])
+
+  const setData = (data, data2, data3) => {
+    setTableData(data)
+    setScatterData(data)
+    setBar2Data(data)
+    setBarData(data2)
+    setMapData(data3)
   }
 
   return (
@@ -169,7 +240,7 @@ const Report = () => {
                 </Select>
               </FormControl>
 
-              <Button className={classes.button} variant="contained" color="primary">
+              <Button className={classes.button} variant="contained" color="primary" onClick={handleSearch}>
                 搜索
                   </Button>
               <Button className={classes.button} onClick={() => { setOpen(true) }} variant="contained" color="primary">
@@ -180,27 +251,27 @@ const Report = () => {
           </AppBar>
           <Grid item xs={12} style={{ marginTop: '30px' }}>
             <Paper className={classes.paper}>
-              <Scatter></Scatter>
+              <Scatter data={scatterData}></Scatter>
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <ChartTable></ChartTable>
+              <ChartTable data={tableData}></ChartTable>
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Map></Map>
+              <Map data={mapData}></Map>
             </Paper>
           </Grid>
           <Grid item xs={6}>
             <Paper className={classes.paper}>
-              <Bar></Bar>
+              <Bar data={barData}></Bar>
             </Paper>
           </Grid>
           <Grid item xs={6}>
             <Paper className={classes.paper}>
-              <Bar2></Bar2>
+              <Bar2 data={bar2Data}></Bar2>
             </Paper>
           </Grid>
         </Grid>
@@ -219,7 +290,7 @@ const Report = () => {
             label="oa用户名（不带@）"
             fullWidth
             value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            onChange={handleChange}
           />
         </DialogContent>
         <DialogActions>

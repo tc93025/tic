@@ -2,8 +2,8 @@ import axios from 'axios'
 
 axios.defaults.baseURL = '/bss';
 
-export function get({ url, data }) {
-  axios({
+export async function get({ url, data }) {
+  return await axios({
     method: 'get',
     url,
     data
@@ -11,7 +11,7 @@ export function get({ url, data }) {
 }
 
 export function post({ url, data }) {
-  axios({
+  return axios({
     method: 'post',
     url,
     data

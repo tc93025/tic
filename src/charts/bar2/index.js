@@ -3,14 +3,33 @@ import echarts from 'echarts'
 import 'echarts/theme/eduardo'
 import { colorList } from '../../common/const'
 
-const datas = []
-for (let i = 1; i <= 50; i++) {
-  datas.push(`${i}`)
-}
-
-const Bar2 = () => {
-
+const Bar2 = (props) => {
+  const data = props.data || [];
   const bar2 = useRef(null)
+  console.log('bar2',data);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      echarts.getInstanceByDom(bar2.current).setOption({
+        yAxis: {
+          type: 'category',
+          data: data.map((i)=>i.goodsName)
+        },
+        series: [{
+          name: '销量',
+          type: 'bar',
+          data: data.map(i=>i.growthSellNum),
+          itemStyle: {
+            normal: {
+              color: function (params) {
+                return colorList[params.dataIndex]
+              }
+            }
+          }
+        }]
+      })
+    }
+  }, [data])
 
   const options = {
     title: {
@@ -35,7 +54,7 @@ const Bar2 = () => {
     },
     yAxis: {
       type: 'category',
-      data: datas
+      data: []
     },
     visualMap: {
       min: 0,
@@ -54,7 +73,7 @@ const Bar2 = () => {
       {
         name: '销量',
         type: 'bar',
-        data: datas,
+        data: [],
         itemStyle: {
           normal: {
             color: function (params) {

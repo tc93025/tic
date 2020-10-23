@@ -15,14 +15,14 @@ const useStyles = makeStyles({
 });
 
 const ChartTable = (props) => {
-  const rows = props.data.reverse()
+  const rows = props.data.slice(0, -1).reverse()
   console.log('ChartTable', rows);
   const classes = useStyles();
 
   const handleClick = async ({ upcCode, goodsName }) => {
     console.log({ upcCode, goodsName });
     const res = await post({ url: '/mess/subGoods', data: { upcCode, goodsName } })
-    alert('推送成功')
+    alert('已推送至全国10843名推广员')
   }
 
   return (
@@ -50,11 +50,14 @@ const ChartTable = (props) => {
               <TableCell align="right">{row.growthSellNum}</TableCell>
               <TableCell align="right">{row.growthDiscountRate}%</TableCell>
               <TableCell align="right">{row.growthSellNumRate}%</TableCell>
-              <TableCell align="right">{row.skuTotalAmount}</TableCell>
-              <TableCell align="right">{row.sellerAmount}</TableCell>
-              <TableCell align="center">
-                <Button className={classes.button} onClick={()=>handleClick(row)} variant="contained" color="primary">
-                  推送地推员
+              <TableCell align="right">{row.skuTotalAmount / 1000 / row.growthSellNum}</TableCell>
+              <TableCell align="right">{row.sellerAmount / 1000 / row.growthSellNum}</TableCell>
+              <TableCell align="left">
+                <Button className={classes.button} onClick={() => handleClick(row)} variant="contained" color="primary">
+                  推广
+                  </Button>
+                  <Button className={classes.button} variant="contained" color="primary">
+                  推送至用户
                   </Button>
               </TableCell>
             </TableRow>

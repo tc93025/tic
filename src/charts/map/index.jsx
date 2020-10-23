@@ -80,7 +80,7 @@ const Map = (props) => {
 
   const options = {
     title: {
-      text: '全国主要城市Top50商品区域分布',
+      text: '全国主要城市商品区域分布',
       left: 'left'
     },
     tooltip: {

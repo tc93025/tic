@@ -12,7 +12,9 @@ const Scatter = (props) => {
     if (data.length > 0) {
       echarts.getInstanceByDom(scatter.current).setOption({
         series: [{
-          symbolSize: 10,
+          symbolSize: function (val) {
+            return val[0];
+          },
           data: data.map((i) => [i.growthDiscountRate, i.sellNum, i.goodsName]),
           type: 'scatter',
           itemStyle: {
@@ -29,7 +31,7 @@ const Scatter = (props) => {
 
   const options = {
     title: {
-      text: '散点图'
+      text: '销量-折扣率'
     },
     xAxis: {
       name: '销量'

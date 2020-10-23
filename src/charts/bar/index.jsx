@@ -18,7 +18,7 @@ const Bar = (props) => {
           nameTextStyle: {
             fontSize: 5
           },
-          data: data.map(i => i.brandId)
+          data: data.map(i => i.brandName)
         },
         series: [
           {

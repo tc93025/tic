@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 });
 
 const ChartTable = (props) => {
-  const rows = props.data
+  const rows = props.data.reverse()
   console.log('ChartTable', rows);
   const classes = useStyles();
 

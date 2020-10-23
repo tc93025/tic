@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer, useRef } from 'react'
 import { Grid, Paper, makeStyles, Select, FormControl, InputLabel, MenuItem, Button, TextField, Container, AppBar, Toolbar, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Snackbar } from '@material-ui/core'
-import { geoCoordMap, orgMap, cityMap } from './common/const'
+import { geoCoordMap, orgMap, cityMap, categoryMap, brandMap } from './common/const'
 import Scatter from './charts/effectScatter'
 import ChartTable from './charts/Table'
 import Bar from './charts/bar'
@@ -16,7 +16,7 @@ function getRandomArrayElements(arr, count) {
     shuffled[index] = shuffled[i];
     shuffled[i] = temp;
   }
-  if(!shuffled.slice(min)[0]){
+  if (!shuffled.slice(min)[0]) {
     return []
   }
   return shuffled.slice(min);
@@ -71,9 +71,9 @@ const queryReducer = (state, action) => {
     case 'org':
       return { ...state, org: action.value, orgCode: orgMap[action.value] }
     case 'category':
-      return { ...state, categoryId: action.value };
+      return { ...state, category: action.value, categoryId: categoryMap[action.value] };
     case 'brand':
-      return { ...state, brandId: action.value };
+      return { ...state, brand: action.value, brandId: brandMap[action.value] };
     default:
       throw new Error();
   }
@@ -95,6 +95,8 @@ const Report = () => {
 
   const cityArr = Object.keys(geoCoordMap)
   const orgArr = Object.keys(orgMap)
+  const categoryArr = Object.keys(categoryMap)
+  const brandArr = Object.keys(brandMap)
 
   const intervalRef = useRef()
 
@@ -108,8 +110,8 @@ const Report = () => {
     setOpen(false)
   }
 
-  const handleConfirm = () => {
-
+  const handleConfirm = async () => {
+    const res = await post({ url: '/stats/queryCityBestSellerGoodsList', data: { ...query, account: address } })
     handleClose()
   }
 
@@ -224,7 +226,7 @@ const Report = () => {
                   value={query.category || ''}
                   onChange={(e) => dispatch({ type: 'category', value: e.target.value })}
                 >
-                  {cityArr.map((i) => <MenuItem key={i} value={i}>{i}</MenuItem>)}
+                  {categoryArr.map((i) => <MenuItem key={i} value={i}>{i}</MenuItem>)}
                 </Select>
               </FormControl>
 
@@ -236,7 +238,7 @@ const Report = () => {
                   value={query.brand || ''}
                   onChange={(e) => dispatch({ type: 'brand', value: e.target.value })}
                 >
-                  {cityArr.map((i) => <MenuItem key={i} value={i}>{i}</MenuItem>)}
+                  {brandArr.map((i) => <MenuItem key={i} value={i}>{i}</MenuItem>)}
                 </Select>
               </FormControl>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer, useRef } from 'react'
-import { Grid, Paper, makeStyles, Select, FormControl, InputLabel, MenuItem, Button, TextField, Container, AppBar, Toolbar, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Snackbar } from '@material-ui/core'
+import { Grid, Paper, makeStyles, Select, FormControl, InputLabel, MenuItem, Button, TextField, Container, AppBar, Toolbar, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText } from '@material-ui/core'
 import { geoCoordMap, orgMap, cityMap, categoryMap, brandMap } from './common/const'
 import Scatter from './charts/effectScatter'
 import ChartTable from './charts/Table'
@@ -102,9 +102,9 @@ const Report = () => {
 
   useEffect(() => {
     handleSearch()
-    let interval = setInterval(() => {
-      handleSearch()
-    }, 600000)
+    // let interval = setInterval(() => {
+    //   handleSearch()
+    // }, 600000)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -114,14 +114,14 @@ const Report = () => {
   }
 
   const handleConfirm = async () => {
-    const res = await post({ url: '/mess/subscribe', data: { ...query, account: address } })
+    await post({ url: '/mess/subscribe', data: { ...query, account: address } })
     alert('订阅成功')
     handleClose()
   }
 
-  const handleDeliver = async() =>{
-    const res = await post({ url: '/mess/subscribe', data: { ...query, account: address } })
-  }
+  // const handleDeliver = async() =>{
+  //   await post({ url: '/mess/subscribe', data: { ...query, account: address } })
+  // }
 
   const handleChange = (e) => {
     setAddress(e.target.value)

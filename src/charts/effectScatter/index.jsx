@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import echarts from 'echarts'
 import 'echarts/theme/eduardo'
-import { return50Brand } from '../../common/mock'
+// import { return50Brand } from '../../common/mock'
 import { colorList } from '../../common/const'
 
 const Scatter = (props) => {

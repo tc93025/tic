@@ -21,7 +21,7 @@ const ChartTable = (props) => {
 
   const handleClick = async ({ upcCode, goodsName }) => {
     console.log({ upcCode, goodsName });
-    const res = await post({ url: '/mess/subGoods', data: { upcCode, goodsName } })
+    await post({ url: '/mess/subGoods', data: { upcCode, goodsName } })
     alert('已推送至全国10843名推广员')
   }
 

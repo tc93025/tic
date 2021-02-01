@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useReducer, useRef } from 'react'
 import { Grid, Paper, makeStyles, Select, FormControl, InputLabel, MenuItem, Button, TextField, Container, AppBar, Toolbar, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText } from '@material-ui/core'
-import { geoCoordMap, orgMap, cityMap, categoryMap, brandMap } from './common/const'
-import Scatter from './charts/effectScatter'
-import ChartTable from './charts/Table'
-import Bar from './charts/bar'
-import Bar2 from './charts/bar2'
-import Map from './charts/map'
-import { post } from './common/request'
+import { geoCoordMap, orgMap, cityMap, categoryMap, brandMap } from '../common/const'
+import Scatter from '../charts/effectScatter'
+import ChartTable from '../charts/Table'
+import Bar from '../charts/bar'
+import Bar2 from '../charts/bar2'
+import Map from '../charts/map'
+import { post } from '../common/request'
 
 function getRandomArrayElements(arr, count) {
   var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;

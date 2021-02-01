@@ -3,7 +3,7 @@ import './App.css';
 // import Lines from './charts/lines'
 // import Pie from './charts/pie'
 // import Sunburst from './charts/sunburst'
-import Report from './paper'
+import Report from './pages/paper'
 function App() {
 
   return (
